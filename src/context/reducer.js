@@ -1,17 +1,30 @@
-import { CREATE, UPDATE, DELETE } from "./actions"  
+import { CREATE, UPDATE, DELETE } from "./actions";
 const reducer = (state, action) => {
-    switch (action.type) {
-      case CREATE: {
-        return console.log("estudiante creado");
-      }
-      case UPDATE: {
-        return console.log("estudiante AÑADIDO");
-      }
-      case DELETE: {
-        return console.log("estudiante ELIMINADO");
-      }
-      default:
-        return state;
+  console.log(action.payload)
+  switch (action.type) {
+    case CREATE: {
+      return {
+        ...state,
+        students: [...state.students, action.payload],
+      };
     }
-}
-export  default reducer
+    case UPDATE: {
+      return {
+        ...state, students: state.students.map((student)=> {
+           return (student.id === action.payload.id) ? action.payload : student
+        })
+      };
+    }
+    case DELETE: {
+      return {
+        ...state,
+        students: state.students.filter((student) => {
+          return student.id !== action.payload;
+        }),
+      };
+    }
+    default:
+      return state;
+  }
+};
+export default reducer;
